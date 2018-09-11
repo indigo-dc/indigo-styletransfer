@@ -1,0 +1,12 @@
+README.md
+setup.cfg
+indigo_styletransfer/ArtGenerator.py
+indigo_styletransfer/__init__.py
+indigo_styletransfer/nst_utils.py
+indigo_styletransfer.egg-info/PKG-INFO
+indigo_styletransfer.egg-info/SOURCES.txt
+indigo_styletransfer.egg-info/dependency_links.txt
+indigo_styletransfer.egg-info/entry_points.txt
+indigo_styletransfer.egg-info/not-zip-safe
+indigo_styletransfer.egg-info/pbr.json
+indigo_styletransfer.egg-info/top_level.txt

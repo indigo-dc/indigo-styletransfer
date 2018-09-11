@@ -1,0 +1,10 @@
+
+tensorflow
+Pillow-PIL
+matplotlib
+scipy
+requests
+
+
+
+

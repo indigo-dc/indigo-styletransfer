@@ -1,0 +1,20 @@
+Metadata-Version: 1.1
+Name: indigo-styletransfer
+Version: 0.0.1.dev1
+Summary: DEEP learning application for image Style Transfer.
+Home-page: http://github.com/indigo-dc/indigo_styletransfer
+Author: Lara Lloret Iglesias
+Author-email: lloret@ifca.unican.es
+License: Apache-2
+Description: 
+        
+        
+Platform: UNKNOWN
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.6
