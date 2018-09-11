@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: indigo-styletransfer
-Version: 0.0.1.dev1
+Version: 0.0.0
 Summary: DEEP learning application for image Style Transfer.
 Home-page: http://github.com/indigo-dc/indigo_styletransfer
 Author: Lara Lloret Iglesias

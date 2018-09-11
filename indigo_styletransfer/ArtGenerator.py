@@ -5,17 +5,10 @@ import scipy.misc
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import imshow
 from PIL import Image
-from nst_utils import *
+from indigo_styletransfer.nst_utils import *
 import numpy as np
 import tensorflow as tf
 
-
-
-
-
-
-
-#content_image = scipy.misc.imread("images/louvre.jpg")
 
 
 def compute_content_cost(a_C, a_G):
@@ -165,73 +158,6 @@ def total_cost(J_content, J_style, alpha = 10, beta = 40):
 
 
 
-with tf.device("/gpu:0"): 
-    print("Starting GPU session")
-
-
-
-with tf.Session() as test:
-    np.random.seed(3)
-    J_content = np.random.randn()    
-    J_style = np.random.randn()
-    J = total_cost(J_content, J_style)
-    print("J = " + str(J))
-
-
-
-# Start interactive session
-sess = tf.InteractiveSession()
-
-
-# Let's load, reshape, and normalize our "content" image (the Louvre museum picture):
-
-content_image = scipy.misc.imread("/home/ubuntu/trump.jpg")
-content_image=scipy.misc.imresize(content_image, (300,400,3))
-content_image = reshape_and_normalize_image(content_image)
-style_image = scipy.misc.imread("/home/ubuntu/trump.jpg")
-style_image=scipy.misc.imresize(style_image, (300,400,3))
-style_image = reshape_and_normalize_image(style_image)
-
-generated_image = generate_noise_image(content_image)
-imshow(generated_image[0])
-
-
-
-model = load_vgg_model("/home/ubuntu/pretrained-model/imagenet-vgg-verydeep-19.mat")
-
-
-sess.run(model['input'].assign(content_image))
-
-# Select the output tensor of layer conv4_2
-out = model['conv4_2']
-
-# Assign the content image to be the input of the VGG model.  
-
-# Set a_C to be the hidden layer activation from the layer we have selected
-a_C = sess.run(out)
-
-# Set a_G to be the hidden layer activation from same layer. Here, a_G references model['conv4_2'] 
-# and isn't evaluated yet. Later in the code, we'll assign the image G as the model input, so that
-# when we run the session, this will be the activations drawn from the appropriate layer, with G as input.
-a_G = out
-
-# Compute the content cost
-J_content = compute_content_cost(a_C, a_G)
-
-
-# Assign the input of the model to be the "style" image 
-sess.run(model['input'].assign(style_image))
-
-# Compute the style cost
-J_style = compute_style_cost(model, STYLE_LAYERS)
-J = total_cost(J_content, J_style,  20,  20)
-
-# define optimizer (1 line)
-optimizer = tf.train.AdamOptimizer(2.0)
-
-# define train_step (1 line)
-train_step = optimizer.minimize(J)
-
 
 
 def model_nn(sess, input_image, num_iterations = 300):
@@ -269,7 +195,72 @@ def model_nn(sess, input_image, num_iterations = 300):
 
 
 
-model_nn(sess, generated_image)
+
+def generate_image(image_content,image_style):
+
+    with tf.device("/gpu:0"): 
+        print("Starting GPU session")
+
+
+
+
+
+# Start interactive session
+    sess = tf.InteractiveSession()
+
+
+# Let's load, reshape, and normalize our "content" image (the Louvre museum picture):
+
+    content_image = scipy.misc.imread("/home/ubuntu/trump.jpg")
+    content_image=scipy.misc.imresize(content_image, (300,400,3))
+    content_image = reshape_and_normalize_image(content_image)
+    style_image = scipy.misc.imread("/home/ubuntu/trump.jpg")
+    style_image=scipy.misc.imresize(style_image, (300,400,3))
+    style_image = reshape_and_normalize_image(style_image)
+
+    generated_image = generate_noise_image(content_image)
+    imshow(generated_image[0])
+
+
+
+    model = load_vgg_model("/home/ubuntu/pretrained-model/imagenet-vgg-verydeep-19.mat")
+
+
+    sess.run(model['input'].assign(content_image))
+
+    # Select the output tensor of layer conv4_2
+    out = model['conv4_2']
+
+    # Assign the content image to be the input of the VGG model.  
+
+    # Set a_C to be the hidden layer activation from the layer we have selected
+    a_C = sess.run(out)
+
+    # Set a_G to be the hidden layer activation from same layer. Here, a_G references model['conv4_2'] 
+    # and isn't evaluated yet. Later in the code, we'll assign the image G as the model input, so that
+    # when we run the session, this will be the activations drawn from the appropriate layer, with G as input.
+    a_G = out
+
+    # Compute the content cost
+    J_content = compute_content_cost(a_C, a_G)
+
+
+    # Assign the input of the model to be the "style" image 
+    sess.run(model['input'].assign(style_image))
+
+    # Compute the style cost
+    J_style = compute_style_cost(model, STYLE_LAYERS)
+    J = total_cost(J_content, J_style,  20,  20)
+
+    # define optimizer (1 line)
+    optimizer = tf.train.AdamOptimizer(2.0)
+
+    # define train_step (1 line)
+    train_step = optimizer.minimize(J)
+
+
+
+    return model_nn(sess, generated_image)
 
 
 
